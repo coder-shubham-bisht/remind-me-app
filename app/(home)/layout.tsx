@@ -1,11 +1,13 @@
-import { Separator } from "@/components/ui/separator";
-import { SignedIn } from "@clerk/clerk-react";
-import { UserButton } from "@clerk/nextjs";
+import { ReactNode } from "react";
 
-export default function HomeLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return <></>;
+function layout({ children }: { children: ReactNode }) {
+  return (
+    <div className="min-h-screen w-full">
+      <div className="max-w-[920px] flex flex-col flex-grow px-4 py-12 mx-auto">
+        {children}
+      </div>
+    </div>
+  );
 }
+
+export default layout;
