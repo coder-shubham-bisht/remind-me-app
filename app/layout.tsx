@@ -5,6 +5,7 @@ import { ClerkProvider, SignedIn, UserButton } from "@clerk/nextjs";
 import { Separator } from "@/components/ui/separator";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ToggleTheme } from "@/components/ToggleTheme";
+import { Toaster } from "@/components/ui/sonner";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -47,6 +48,7 @@ export default function RootLayout({
               <Separator />
               <main className="flex justify-center items-center w-full grow">
                 {children}
+                <Toaster richColors />
               </main>
             </div>
           </ThemeProvider>
