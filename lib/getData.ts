@@ -11,5 +11,8 @@ export const getCollectionList = async () => {
   return await db.query.collections.findMany({
     where: eq(collections.userId, user.id),
     orderBy: [desc(collections.createdAt)],
+    with: {
+      tasks: true,
+    },
   });
 };

@@ -1,5 +1,6 @@
-import { CollectionColors, colorList } from "@/lib/contants";
+import { colorList } from "@/lib/constant";
 import { z } from "zod";
+import { taskType } from "./task";
 
 export const createCollectionSchema = z.object({
   name: z.string().min(4, {
@@ -9,3 +10,13 @@ export const createCollectionSchema = z.object({
 });
 
 export type createCollectionSchemaType = z.infer<typeof createCollectionSchema>;
+
+export type collectionType = {
+  id: number;
+  name: string;
+  userId: string;
+  color: string;
+  createdAt: Date;
+  updatedAt: Date;
+  tasks: taskType[];
+};

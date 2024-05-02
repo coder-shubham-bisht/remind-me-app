@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { CollectionColor, CollectionColors, colorList } from "@/lib/contants";
+import { CollectionColor, CollectionColors, colorList } from "@/lib/constant";
 import { cn } from "@/lib/utils";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";

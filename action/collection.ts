@@ -26,7 +26,6 @@ export const createCollection = async (values: createCollectionSchemaType) => {
   const collection = await db.query.collections.findFirst({
     where: and(eq(collections.name, name), eq(collections.userId, user.id)),
   });
-  console.log(collection);
 
   if (collection) {
     return { success: false, message: "Collection already exists" };
@@ -37,5 +36,17 @@ export const createCollection = async (values: createCollectionSchemaType) => {
     return { success: true, message: "Collection created successfully" };
   } catch (error) {
     return { success: false, message: "Collection creation failed" };
+  }
+};
+
+export const deleteCollection = async (collectionId: number) => {
+  console.log(collectionId);
+
+  try {
+    await db.delete(collections).where(eq(collections.id, collectionId));
+    revalidatePath("/");
+    return { success: true, message: "Collection deleted successfully" };
+  } catch (error) {
+    return { success: false, message: "Collection deletion failed" };
   }
 };

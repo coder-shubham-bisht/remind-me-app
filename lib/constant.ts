@@ -9,5 +9,5 @@ export const CollectionColors = {
   powder: "bg-gradient-to-r from-violet-200 to-pink-200",
 };
 
-export type CollectionColor = keyof typeof CollectionColors;
+export type CollectionColorsType = keyof typeof CollectionColors;
 export const colorList = Object.keys(CollectionColors);
