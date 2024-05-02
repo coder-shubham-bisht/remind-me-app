@@ -28,6 +28,7 @@ import { collectionType } from "@/schema/collection";
 import { format } from "date-fns";
 import { CaretDownIcon, CaretUpIcon } from "@radix-ui/react-icons";
 import { TrashIcon } from "lucide-react";
+import UpdateCollectionSheet from "./UpdateCollectionSheet";
 
 function CollectionCard({ collection }: { collection: collectionType }) {
   const [isOpen, setIsOpen] = useState(true);
@@ -125,34 +126,40 @@ function CollectionCard({ collection }: { collection: collectionType }) {
                 {format(collection.createdAt, "PPP")}
               </span>
             </p>
-            {isDeleting ? (
-              <TrashIcon className="animate-ping" />
-            ) : (
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button size={"icon"} variant={"ghost"}>
-                    <TrashIcon />
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This action cannot be undone. This will permanently delete
-                    your collection and all tasks inside it.
-                  </AlertDialogDescription>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={() => {
-                        deleteTransition(removeCollection);
-                      }}
-                    >
-                      Proceed
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            )}
+
+            <div>
+              <UpdateCollectionSheet collection={collection} />
+              {isDeleting ? (
+                <TrashIcon className="animate-ping" />
+              ) : (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button size={"icon"} variant={"ghost"}>
+                      <TrashIcon />
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      your collection and all tasks inside it.
+                    </AlertDialogDescription>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => {
+                          deleteTransition(removeCollection);
+                        }}
+                      >
+                        Proceed
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
+            </div>
           </section>
         </CollapsibleContent>
       </Collapsible>

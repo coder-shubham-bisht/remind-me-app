@@ -3,6 +3,7 @@
 import { db } from "@/drizzle/db";
 import { collections } from "@/drizzle/schema";
 import {
+  collectionType,
   createCollectionSchema,
   createCollectionSchemaType,
 } from "@/schema/collection";
@@ -48,5 +49,43 @@ export const deleteCollection = async (collectionId: number) => {
     return { success: true, message: "Collection deleted successfully" };
   } catch (error) {
     return { success: false, message: "Collection deletion failed" };
+  }
+};
+
+export const updateCollection = async (
+  collectionId: number,
+  values: createCollectionSchemaType
+) => {
+  const user = await currentUser();
+  if (!user) {
+    throw new Error("user not found");
+  }
+  const validatedData = createCollectionSchema.safeParse(values);
+  if (!validatedData.success) {
+    return { success: false, message: "Collection schema validation failed" };
+  }
+  const { color, name } = validatedData.data;
+  const collection = await db.query.collections.findFirst({
+    where: and(
+      eq(collections.userId, user.id),
+      eq(collections.id, collectionId)
+    ),
+  });
+  if (!collection) {
+    return { success: false, message: "Collection not found" };
+  }
+  try {
+    await db
+      .update(collections)
+      .set({
+        name,
+        color,
+      })
+      .where(eq(collections.id, collectionId));
+    revalidatePath("/");
+    return { success: true, message: "Collection updated successfully" };
+  } catch (error) {
+    console.log(error);
+    return { success: false, message: "Collection update failed" };
   }
 };
