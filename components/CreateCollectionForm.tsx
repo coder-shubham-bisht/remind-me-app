@@ -9,25 +9,29 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
+} from "./ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
-import { CollectionColor, CollectionColors, colorList } from "@/lib/constant";
+} from "./ui/select";
+import {
+  CollectionColors,
+  CollectionColorsType,
+  colorList,
+} from "@/lib/constant";
 import { cn } from "@/lib/utils";
-import { Separator } from "../ui/separator";
-import { Button } from "../ui/button";
+import { Separator } from "./ui/separator";
+import { Button } from "./ui/button";
 import {
   createCollectionSchema,
   createCollectionSchemaType,
 } from "@/schema/collection";
 import { createCollection } from "@/action/collection";
 import { toast } from "sonner";
-import { Input } from "../ui/input";
+import { Input } from "./ui/input";
 import { ReloadIcon } from "@radix-ui/react-icons";
 
 const CreateCollectionForm = () => {
@@ -38,7 +42,7 @@ const CreateCollectionForm = () => {
     },
   });
   const selectedColor = form.watch("color");
-  console.log(CollectionColors[selectedColor as CollectionColor]);
+  console.log(CollectionColors[selectedColor as CollectionColorsType]);
 
   const onSubmit = async (data: createCollectionSchemaType) => {
     const res = await createCollection(data);
@@ -83,7 +87,7 @@ const CreateCollectionForm = () => {
                   <Select onValueChange={field.onChange}>
                     <SelectTrigger
                       className={cn(
-                        CollectionColors[selectedColor as CollectionColor]
+                        CollectionColors[selectedColor as CollectionColorsType]
                       )}
                     >
                       <SelectValue placeholder="Select Color" />
@@ -95,7 +99,7 @@ const CreateCollectionForm = () => {
                           value={color}
                           className={cn(
                             `w-full h-8 rounded-md my-1 text-white focus:text-white focus:font-bold focus:ring-2 ring-neutral-600 focus:ring-inset dark:focus:ring-white tracking-wide`,
-                            CollectionColors[color as CollectionColor]
+                            CollectionColors[color as CollectionColorsType]
                           )}
                         >
                           {color}
@@ -116,7 +120,9 @@ const CreateCollectionForm = () => {
             <Button
               disabled={form.formState.isSubmitting}
               variant={"outline"}
-              className={cn(CollectionColors[selectedColor as CollectionColor])}
+              className={cn(
+                CollectionColors[selectedColor as CollectionColorsType]
+              )}
               type="submit"
             >
               Confirm
