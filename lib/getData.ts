@@ -1,5 +1,5 @@
 import { db } from "@/drizzle/db";
-import { collections } from "@/drizzle/schema";
+import { collections, tasks } from "@/drizzle/schema";
 import { currentUser } from "@clerk/nextjs/server";
 import { desc, eq } from "drizzle-orm";
 
@@ -12,7 +12,9 @@ export const getCollectionList = async () => {
     where: eq(collections.userId, user.id),
     orderBy: [desc(collections.createdAt)],
     with: {
-      tasks: true,
+      tasks: {
+        orderBy: [desc(tasks.createdAt)],
+      },
     },
   });
 };

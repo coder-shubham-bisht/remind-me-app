@@ -8,6 +8,8 @@ import { taskType } from "@/schema/task";
 import { setTaskToDone } from "@/action/task";
 import { CollectionColors, CollectionColorsType } from "@/lib/constant";
 import DeleteTask from "./DeleteTask";
+import { toast } from "sonner";
+import { Loader, Loader2, Loader2Icon, TrashIcon } from "lucide-react";
 
 function getExpirationColor(expiresAt: Date) {
   const days = Math.floor(expiresAt.getTime() - Date.now()) / 1000 / 60 / 60;
@@ -29,23 +31,31 @@ function TaskCard({
   const [isChecking, checkTransition] = useTransition();
   const [isDeleting, deleteTransition] = useTransition();
   return (
-    <div className="flex gap-2  items-center w-full justify-between">
+    <div className="flex gap-2  items-center w-full justify-between ">
       <div className="flex items-center gap-2">
-        <Checkbox
-          id={task.id.toString()}
-          className="w-5 h-5"
-          checked={task.done}
-          disabled={task.done || isChecking}
-          onCheckedChange={() => {
-            checkTransition(async () => {
-              await setTaskToDone(task.id);
-            });
-          }}
-        />
+        {isChecking ? (
+          <Loader className="animate-spin" />
+        ) : (
+          <Checkbox
+            id={task.id.toString()}
+            className="w-5 h-5"
+            checked={task.done}
+            onCheckedChange={() => {
+              checkTransition(async () => {
+                const res = await setTaskToDone(task.id, task.done);
+                if (res.success) {
+                  toast.success(res.message);
+                } else {
+                  toast.error(res.message);
+                }
+              });
+            }}
+          />
+        )}
         <label
           htmlFor={task.id.toString()}
           className={cn(
-            "text-sm font-medium leading-none hover:cursor-pointer peer-disabled:cursor-not-allowed peer-disabled:opacity-70 decoration-1 dark:decoration-white",
+            "text-sm font-medium leading-none hover:cursor-pointer  decoration-1 dark:decoration-white",
             task.done && "line-through"
           )}
         >
@@ -54,8 +64,12 @@ function TaskCard({
       </div>
       <div className="flex items-center gap-2">
         {task.expiresAt && (
-          <p className={cn("text-xs text-neutral-500 dark:text-neutral-400  ")}>
-            expireAt
+          <p
+            className={cn(
+              "text-xs text-neutral-500 dark:text-neutral-400  space-x-2 "
+            )}
+          >
+            <span>expireAt</span>
             <span
               className={cn(
                 "bg-clip-text text-transparent",
@@ -67,10 +81,11 @@ function TaskCard({
           </p>
         )}
 
+        {/* Delete task Button */}
         {isDeleting ? (
-          <span>Deleting..</span>
+          <TrashIcon className="animate-ping" />
         ) : (
-          <DeleteTask taskId={task.id} startTransition={deleteTransition} />
+          <DeleteTask taskId={task.id} deleteTransition={deleteTransition} />
         )}
       </div>
     </div>

@@ -16,10 +16,10 @@ import { toast } from "sonner";
 
 const DeleteTask = ({
   taskId,
-  startTransition,
+  deleteTransition,
 }: {
   taskId: number;
-  startTransition: React.TransitionStartFunction;
+  deleteTransition: React.TransitionStartFunction;
 }) => {
   const removeTask = async () => {
     try {
@@ -49,7 +49,7 @@ const DeleteTask = ({
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={() => {
-              startTransition(removeTask);
+              deleteTransition(removeTask);
             }}
           >
             Proceed

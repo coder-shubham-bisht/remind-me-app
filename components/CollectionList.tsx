@@ -14,27 +14,25 @@ export async function CollectionList() {
   const collectionList = await getCollectionList();
 
   return (
-    <>
+    <div className="w-full grow flex justify-center items-center flex-col gap-y-4">
+      <CreateCollectionSheet />
+
       {collectionList.length === 0 ? (
-        <div className="w-full grow flex justify-center items-center flex-col gap-y-4">
-          <Alert variant={"destructive"}>
-            <SadFace />
-            <AlertTitle>There are no collections yet!</AlertTitle>
-            <AlertDescription>
-              Create a collection to get started
-            </AlertDescription>
-          </Alert>
-          <CreateCollectionSheet />
-        </div>
+        <Alert variant={"destructive"}>
+          <SadFace />
+          <AlertTitle>There are no collections yet!</AlertTitle>
+          <AlertDescription>
+            Create a collection to get started
+          </AlertDescription>
+        </Alert>
       ) : (
-        <div className="w-full grow flex justify-center items-center flex-col gap-y-4">
-          <CreateCollectionSheet />
+        <>
           {collectionList.map((collection) => (
             <CollectionCard key={collection.id} collection={collection} />
           ))}
-        </div>
+        </>
       )}
-    </>
+    </div>
   );
 }
 

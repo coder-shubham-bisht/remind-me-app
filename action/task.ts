@@ -32,7 +32,7 @@ export async function createTask(data: createTaskSchemaType) {
   }
 }
 
-export async function setTaskToDone(id: number) {
+export async function setTaskToDone(id: number, done: boolean) {
   const user = await currentUser();
 
   if (!user) {
@@ -43,12 +43,13 @@ export async function setTaskToDone(id: number) {
     await db
       .update(tasks)
       .set({
-        done: true,
+        done: !done,
       })
       .where(and(eq(tasks.id, id), eq(tasks.userId, user.id)));
     revalidatePath("/");
 
-    return { success: true, message: "Task marked as done" };
+    const text = done ? "undone" : "done";
+    return { success: true, message: `Task marked as ${text}` };
   } catch (error) {
     console.log(error);
     return { success: false, message: "Task marking as done failed" };
