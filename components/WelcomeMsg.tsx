@@ -1,5 +1,6 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { Skeleton } from "./ui/skeleton";
+import { TextGenerateEffect } from "./text-generate-effect";
 
 export async function WelcomeMsg() {
   const user = await currentUser();
@@ -8,9 +9,8 @@ export async function WelcomeMsg() {
   }
   return (
     <div className="flex w-full">
-      <h1 className="text-4xl font-bold">
-        Welocme
-        {user.fullName}
+      <h1>
+        <TextGenerateEffect words={"Welcome " + user.fullName} />
       </h1>
     </div>
   );
