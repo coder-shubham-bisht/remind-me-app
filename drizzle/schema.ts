@@ -40,7 +40,7 @@ export const tasks = pgTable("task", {
   done: boolean("done").default(false).notNull(),
   collectionId: integer("collectionId")
     .notNull()
-    .references(() => collections.id),
+    .references(() => collections.id, { onDelete: "cascade" }),
   userId: text("userId").notNull(),
   createdAt: date("createdAt", { mode: "date" }).defaultNow().notNull(),
   updatedAt: date("updatedAt", { mode: "date" })

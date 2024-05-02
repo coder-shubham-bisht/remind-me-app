@@ -35,13 +35,13 @@ import { toast } from "sonner";
 import { createTaskSchema, createTaskSchemaType } from "@/schema/task";
 import { collectionType } from "@/schema/collection";
 import { createTask } from "@/action/task";
+import { PlusIcon } from "lucide-react";
 
 interface Props {
   collection: collectionType;
-  children: ReactNode;
 }
 
-function CreateTaskDialog({ collection, children }: Props) {
+function CreateTaskDialog({ collection }: Props) {
   const form = useForm<createTaskSchemaType>({
     resolver: zodResolver(createTaskSchema),
     defaultValues: {
@@ -66,7 +66,11 @@ function CreateTaskDialog({ collection, children }: Props) {
 
   return (
     <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogTrigger asChild>
+        <Button size={"icon"} variant={"ghost"}>
+          <PlusIcon />
+        </Button>
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="space-x-2">

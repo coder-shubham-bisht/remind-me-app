@@ -8,10 +8,8 @@ import {
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 import { CollectionColors, CollectionColorsType } from "@/lib/constant";
-import { CaretDownIcon, CaretUpIcon, TrashIcon } from "@radix-ui/react-icons";
 import { Progress } from "./ui/progress";
 import { Separator } from "./ui/separator";
-import PlusIcon from "./icons/PlusIcon";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,12 +21,13 @@ import {
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import CreateTaskDialog from "./CreateTaskDialog";
 import TaskCard from "./TaskCard";
 import { deleteCollection } from "@/action/collection";
 import { collectionType } from "@/schema/collection";
 import { format } from "date-fns";
+import { CaretDownIcon, CaretUpIcon } from "@radix-ui/react-icons";
+import { TrashIcon } from "lucide-react";
 
 function CollectionCard({ collection }: { collection: collectionType }) {
   const [isOpen, setIsOpen] = useState(true);
@@ -71,18 +70,15 @@ function CollectionCard({ collection }: { collection: collectionType }) {
             )}
           >
             <span className="text-white font-bold">{collection.name}</span>
-            {!isOpen && <CaretDownIcon className="h-6 w-6" />}
-            {isOpen && <CaretUpIcon className="h-6 w-6" />}
+            {!isOpen && <CaretDownIcon />}
+            {isOpen && <CaretUpIcon />}
           </Button>
         </CollapsibleTrigger>
         <CollapsibleContent>
           {/* if no task is there */}
           {tasks.length === 0 && (
-            <CreateTaskDialog collection={collection}>
-              <Button
-                variant={"ghost"}
-                className="flex items-center justify-center gap-1 p-8 py-12 rounded-none w-full"
-              >
+            <div className="w-full flex flex-col">
+              <div className="flex items-center justify-center gap-1   rounded-none w-full">
                 <p>There are no tasks yet:</p>
                 <span
                   className={cn(
@@ -92,17 +88,27 @@ function CollectionCard({ collection }: { collection: collectionType }) {
                 >
                   Create one
                 </span>
-              </Button>
-            </CreateTaskDialog>
+              </div>
+              <div className="self-center">
+                <CreateTaskDialog collection={collection} />
+              </div>
+            </div>
           )}
           {/* if tasks is there */}
           {tasks.length > 0 && (
             <>
               <Progress value={progress} />
-              <div className="p-4 gap-3 flex flex-col">
+              <div className="p-2 gap-3 flex flex-col">
                 {tasks.map((task) => (
-                  <TaskCard key={task.id} task={task} />
+                  <TaskCard
+                    key={task.id}
+                    task={task}
+                    color={collection.color as CollectionColorsType}
+                  />
                 ))}
+                <div className="self-center">
+                  <CreateTaskDialog collection={collection} />
+                </div>
               </div>
             </>
           )}
@@ -124,11 +130,6 @@ function CollectionCard({ collection }: { collection: collectionType }) {
             {!isLoading && (
               <div className="space-x-1">
                 {/* create task with plus button */}
-                <CreateTaskDialog collection={collection}>
-                  <Button size={"icon"} variant={"ghost"}>
-                    <PlusIcon />
-                  </Button>
-                </CreateTaskDialog>
 
                 {/* delete collection wit alert box */}
                 <AlertDialog>

@@ -54,3 +54,21 @@ export async function setTaskToDone(id: number) {
     return { success: false, message: "Task marking as done failed" };
   }
 }
+
+export async function deleteTask(taskId: number) {
+  const user = await currentUser();
+  if (!user) {
+    throw new Error("user not found");
+  }
+
+  try {
+    await db
+      .delete(tasks)
+      .where(and(eq(tasks.id, taskId), eq(tasks.userId, user.id)));
+    revalidatePath("/");
+    return { success: true, message: "Task deleted successfully" };
+  } catch (error) {
+    console.log(error);
+    return { success: false, message: "Task deletion failed" };
+  }
+}
