@@ -5,6 +5,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import SadFace from "./icons/SadFace";
 import CollectionCard from "./CollectionCard";
+import { collectionType } from "@/schema/collection";
 
 export async function CollectionList() {
   const user = await currentUser();
@@ -28,7 +29,10 @@ export async function CollectionList() {
       ) : (
         <>
           {collectionList.map((collection) => (
-            <CollectionCard key={collection.id} collection={collection} />
+            <CollectionCard
+              key={collection.id}
+              collection={collection as collectionType}
+            />
           ))}
         </>
       )}

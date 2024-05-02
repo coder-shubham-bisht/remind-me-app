@@ -103,7 +103,7 @@ function CollectionCard({ collection }: { collection: collectionType }) {
                   <TaskCard
                     key={task.id}
                     task={task}
-                    color={collection.color as CollectionColorsType}
+                    colllection={collection}
                   />
                 ))}
                 <div className="self-center">

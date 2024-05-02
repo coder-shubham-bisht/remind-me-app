@@ -2,7 +2,7 @@
 
 import { db } from "@/drizzle/db";
 import { tasks } from "@/drizzle/schema";
-import { createTaskSchemaType } from "@/schema/task";
+import { createTaskSchema, createTaskSchemaType } from "@/schema/task";
 import { currentUser } from "@clerk/nextjs/server";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
@@ -71,5 +71,32 @@ export async function deleteTask(taskId: number) {
   } catch (error) {
     console.log(error);
     return { success: false, message: "Task deletion failed" };
+  }
+}
+
+export async function updateTask(taskId: number, values: createTaskSchemaType) {
+  const user = await currentUser();
+  if (!user) {
+    throw new Error("user not found");
+  }
+  const validatedData = createTaskSchema.safeParse(values);
+  if (!validatedData.success) {
+    return { success: false, message: "Task schema validation failed" };
+  }
+  const { content, expiresAt, collectionId } = validatedData.data;
+
+  try {
+    await db
+      .update(tasks)
+      .set({
+        content,
+        expiresAt,
+      })
+      .where(and(eq(tasks.id, taskId), eq(tasks.userId, user.id)));
+    revalidatePath("/");
+    return { success: true, message: "Task updated successfully" };
+  } catch (error) {
+    console.log(error);
+    return { success: false, message: "Task update failed" };
   }
 }

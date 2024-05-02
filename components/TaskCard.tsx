@@ -9,7 +9,9 @@ import { setTaskToDone } from "@/action/task";
 import { CollectionColors, CollectionColorsType } from "@/lib/constant";
 import DeleteTask from "./DeleteTask";
 import { toast } from "sonner";
-import { Loader, Loader2, Loader2Icon, TrashIcon } from "lucide-react";
+import { Loader, TrashIcon } from "lucide-react";
+import UpdateTaskDialog from "./UpdateTaskDialog";
+import { collectionType } from "@/schema/collection";
 
 function getExpirationColor(expiresAt: Date) {
   const days = Math.floor(expiresAt.getTime() - Date.now()) / 1000 / 60 / 60;
@@ -23,10 +25,10 @@ function getExpirationColor(expiresAt: Date) {
 
 function TaskCard({
   task,
-  color,
+  colllection,
 }: {
   task: taskType;
-  color: CollectionColorsType;
+  colllection: collectionType;
 }) {
   const [isChecking, checkTransition] = useTransition();
   const [isDeleting, deleteTransition] = useTransition();
@@ -73,14 +75,14 @@ function TaskCard({
             <span
               className={cn(
                 "bg-clip-text text-transparent",
-                CollectionColors[color as CollectionColorsType]
+                CollectionColors[colllection.color as CollectionColorsType]
               )}
             >
               {format(task.expiresAt, "dd/MM/yyyy")}
             </span>
           </p>
         )}
-
+        <UpdateTaskDialog collection={colllection} task={task} />
         {/* Delete task Button */}
         {isDeleting ? (
           <TrashIcon className="animate-ping" />

@@ -16,7 +16,7 @@ export type taskType = {
   done: boolean;
   collectionId: number;
   userId: string;
-  expiresAt: Date | null;
+  expiresAt: Date | undefined;
   createdAt: Date;
   updatedAt: Date;
 };
