@@ -4,12 +4,12 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "./ui/collapsible";
-import { Button } from "./ui/button";
+} from "../ui/collapsible";
+import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { CollectionColors, CollectionColorsType } from "@/lib/constant";
-import { Progress } from "./ui/progress";
-import { Separator } from "./ui/separator";
+import { Progress } from "../ui/progress";
+import { Separator } from "../ui/separator";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,16 +19,18 @@ import {
   AlertDialogFooter,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "./ui/alert-dialog";
+} from "../ui/alert-dialog";
 import { toast } from "sonner";
-import CreateTaskDialog from "./CreateTaskDialog";
-import TaskCard from "./TaskCard";
+import CreateTaskDialog from "../task/CreateTaskDialog";
+import TaskCard from "../task/TaskCard";
 import { deleteCollection } from "@/action/collection";
 import { collectionType } from "@/schema/collection";
 import { format } from "date-fns";
 import { CaretDownIcon, CaretUpIcon } from "@radix-ui/react-icons";
-import { TrashIcon } from "lucide-react";
-import UpdateCollectionSheet from "./UpdateCollectionSheet";
+import { Pencil, TrashIcon } from "lucide-react";
+import UpdateCollectionForm from "./UpdateCollectionForm";
+import CollectionSheet from "./CollectionSheet";
+import CreateTaskForm from "../task/CreateTaskForm";
 
 function CollectionCard({ collection }: { collection: collectionType }) {
   const [isOpen, setIsOpen] = useState(true);
@@ -65,38 +67,43 @@ function CollectionCard({ collection }: { collection: collectionType }) {
             variant={"ghost"}
             className={cn(
               "flex w-full justify-between p-6",
-              isOpen && "rounded-b-none",
+
               CollectionColors[collection.color as CollectionColorsType]
             )}
           >
             <span className="text-white font-bold">{collection.name}</span>
-            {!isOpen && <CaretDownIcon />}
-            {isOpen && <CaretUpIcon />}
+            {!isOpen && <CaretDownIcon className="w-5 h-5" />}
+            {isOpen && <CaretUpIcon className="w-5 h-5" />}
           </Button>
         </CollapsibleTrigger>
         <CollapsibleContent>
           {/* if no task is there */}
           {tasks.length === 0 && (
-            <div className="w-full flex flex-col">
-              <div className="flex items-center justify-center gap-1   rounded-none w-full">
+            <>
+              <div className="flex items-center justify-center gap-2 rounded-none w-full p-2">
                 <p>There are no tasks yet:</p>
-                <span
+                <p
                   className={cn(
-                    "text-sm bg-clip-text text-transparent",
+                    "text-sm bg-clip-text text-transparent animate-bounce",
                     CollectionColors[collection.color as CollectionColorsType]
                   )}
                 >
                   Create one
-                </span>
+                </p>
               </div>
-              <div className="self-center">
-                <CreateTaskDialog collection={collection} />
+              {/* create task dialog button */}
+
+              <div className="flex justify-center ">
+                <CreateTaskDialog collection={collection}>
+                  <CreateTaskForm collection={collection} />
+                </CreateTaskDialog>
               </div>
-            </div>
+            </>
           )}
           {/* if tasks is there */}
           {tasks.length > 0 && (
             <>
+              {/* progress bar of this collection tasks */}
               <Progress value={progress} />
               <div className="p-2 gap-3 flex flex-col">
                 {tasks.map((task) => (
@@ -106,14 +113,22 @@ function CollectionCard({ collection }: { collection: collectionType }) {
                     colllection={collection}
                   />
                 ))}
-                <div className="self-center">
-                  <CreateTaskDialog collection={collection} />
-                </div>
+              </div>
+
+              {/* create task dialog button */}
+              <div className="flex justify-center w-full">
+                <CreateTaskDialog collection={collection}>
+                  <CreateTaskForm collection={collection} />
+                </CreateTaskDialog>
               </div>
             </>
           )}
-          <Separator />
-          <section className="h-[40px] px-4 p-[2px] text-sm text-neutral-500 flex justify-between items-center hover:bg-slate-300 ">
+
+          {/* seprator b/w task list and footer of collection */}
+          <Separator className="h-[2px]" />
+
+          {/* footer of collection with create at date and edit and delete button */}
+          <section className=" px-4 p-[2px] text-sm text-neutral-500 flex justify-between items-center hover:bg-slate-300 ">
             {/* collection created At date */}
             <p className="space-x-1">
               <span>Created at</span>
@@ -127,10 +142,29 @@ function CollectionCard({ collection }: { collection: collectionType }) {
               </span>
             </p>
 
-            <div>
-              <UpdateCollectionSheet collection={collection} />
+            {/* server actions button */}
+            <div className="flex gap-1">
+              {/* update collections actio button */}
+              <CollectionSheet
+                title={"Update " + collection.name + " collection"}
+                description="Collections are a way to group your tasks"
+                trigger={
+                  <Button variant={"ghost"} size={"icon"}>
+                    <Pencil />
+                  </Button>
+                }
+              >
+                <UpdateCollectionForm collection={collection} />
+              </CollectionSheet>
+
               {isDeleting ? (
-                <TrashIcon className="animate-ping" />
+                <Button
+                  size={"icon"}
+                  variant={"ghost"}
+                  className="animate-bounce"
+                >
+                  <TrashIcon />
+                </Button>
               ) : (
                 <AlertDialog>
                   <AlertDialogTrigger asChild>

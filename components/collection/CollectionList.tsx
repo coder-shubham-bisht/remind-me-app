@@ -1,9 +1,8 @@
 import { getCollectionList } from "@/lib/getData";
-import CreateCollectionSheet from "./CreateCollectionSheet";
-import { Skeleton } from "./ui/skeleton";
+import { Skeleton } from "../ui/skeleton";
 import { currentUser } from "@clerk/nextjs/server";
-import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
-import SadFace from "./icons/SadFace";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+import SadFace from "../icons/SadFace";
 import CollectionCard from "./CollectionCard";
 import { collectionType } from "@/schema/collection";
 
@@ -15,15 +14,13 @@ export async function CollectionList() {
   const collectionList = await getCollectionList();
 
   return (
-    <div className="w-full grow flex justify-center items-center flex-col gap-y-4">
-      <CreateCollectionSheet />
-
+    <>
       {collectionList.length === 0 ? (
         <Alert variant={"destructive"}>
           <SadFace />
           <AlertTitle>There are no collections yet!</AlertTitle>
           <AlertDescription>
-            Create a collection to get started
+            Create a collection to get started.
           </AlertDescription>
         </Alert>
       ) : (
@@ -36,15 +33,15 @@ export async function CollectionList() {
           ))}
         </>
       )}
-    </div>
+    </>
   );
 }
 
 export function CollectionListLoader() {
   return (
-    <div className="w-full grow flex justify-center items-center">
-      <Skeleton className="w-[230px] h-[50px]" />
-      <Skeleton className="w-[230px] h-[50px]" />
-    </div>
+    <section className="flex  flex-col justify-center items-center gap-y-4 mt-12 w-full">
+      <Skeleton className="w-full h-[150px]" />
+      <Skeleton className="w-full h-[150px]" />
+    </section>
   );
 }

@@ -9,40 +9,37 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form";
+} from "../ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
+} from "../ui/select";
 import {
   CollectionColors,
   CollectionColorsType,
   colorList,
 } from "@/lib/constant";
 import { cn } from "@/lib/utils";
-import { Separator } from "./ui/separator";
-import { Button } from "./ui/button";
+import { Separator } from "../ui/separator";
+import { Button } from "../ui/button";
 import {
   createCollectionSchema,
   createCollectionSchemaType,
 } from "@/schema/collection";
 import { createCollection } from "@/action/collection";
 import { toast } from "sonner";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 import { ReloadIcon } from "@radix-ui/react-icons";
 
 const CreateCollectionForm = () => {
   const form = useForm<createCollectionSchemaType>({
     resolver: zodResolver(createCollectionSchema),
-    defaultValues: {
-      name: "",
-    },
+    defaultValues: {},
   });
   const selectedColor = form.watch("color");
-  console.log(CollectionColors[selectedColor as CollectionColorsType]);
 
   const onSubmit = async (data: createCollectionSchemaType) => {
     const res = await createCollection(data);
@@ -60,7 +57,7 @@ const CreateCollectionForm = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-4 flex flex-col"
+          className="space-y-4 flex flex-col py-4"
         >
           <FormField
             control={form.control}

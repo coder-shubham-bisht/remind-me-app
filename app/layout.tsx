@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ToggleTheme } from "@/components/ToggleTheme";
 import { Toaster } from "@/components/ui/sonner";
+import { cn } from "@/lib/utils";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -25,32 +26,33 @@ export default function RootLayout({
         className="scroll-smooth antialiased"
         suppressHydrationWarning
       >
-        <body className={inter.className}>
+        <body className={cn("min-h-screen", inter.className)}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
           >
-            <div className="min-h-screen w-full flex flex-col items-center dark:bg-black">
-              <header className="flex justify-between items-center h-[60px] p-4 px-8 w-full">
-                {/* logo */}
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent animate-pulse">
-                  RemindMe
-                </h1>
-                <div className="flex items-center gap-4">
-                  <SignedIn>
-                    <UserButton />
-                  </SignedIn>
-                  <ToggleTheme />
-                </div>
-              </header>
-              <Separator />
-              <main className="flex justify-center items-center w-full grow">
-                {children}
-                <Toaster richColors />
-              </main>
-            </div>
+            {/* common header */}
+            <header className="flex justify-between items-center h-14 container sticky top-0 z-50 w-full  bg-transparent backdrop-blur supports-[backdrop-filter]:bg-background/60">
+              {/* logo of the webiste */}
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent animate-pulse">
+                RemindMe
+              </h1>
+              {/* clerk user button */}
+              <div className="flex items-center gap-4">
+                <SignedIn>
+                  <UserButton />
+                </SignedIn>
+
+                {/* theme switch dropdown */}
+                <ToggleTheme />
+              </div>
+            </header>
+            {/* header and main element seperator */}
+            <Separator className="h-[2px]" />
+            {children}
+            <Toaster richColors />
           </ThemeProvider>
         </body>
       </html>

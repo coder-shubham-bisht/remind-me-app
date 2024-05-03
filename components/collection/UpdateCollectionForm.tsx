@@ -9,30 +9,30 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form";
+} from "../ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
+} from "../ui/select";
 import {
   CollectionColors,
   CollectionColorsType,
   colorList,
 } from "@/lib/constant";
 import { cn } from "@/lib/utils";
-import { Separator } from "./ui/separator";
-import { Button } from "./ui/button";
+import { Separator } from "../ui/separator";
+import { Button } from "../ui/button";
 import {
   collectionType,
   createCollectionSchema,
   createCollectionSchemaType,
 } from "@/schema/collection";
-import { createCollection, updateCollection } from "@/action/collection";
+import { updateCollection } from "@/action/collection";
 import { toast } from "sonner";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 import { ReloadIcon } from "@radix-ui/react-icons";
 
 const UpdateCollectionForm = ({

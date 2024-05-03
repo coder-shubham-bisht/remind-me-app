@@ -1,26 +1,36 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { Skeleton } from "./ui/skeleton";
-import { TextGenerateEffect } from "./text-generate-effect";
+import { TypewriterEffectSmooth } from "./typewriter-effect";
+import { redirect } from "next/navigation";
 
 export async function WelcomeMsg() {
   const user = await currentUser();
   if (!user) {
-    return <div>error</div>;
+    return redirect("sign-in");
   }
+  const words = [
+    {
+      text: "Welcome ",
+    },
+    {
+      text: user.firstName as string,
+    },
+
+    {
+      text: user.lastName as string,
+    },
+  ];
   return (
-    <div className="flex w-full">
-      <h1>
-        <TextGenerateEffect words={"Welcome " + user.fullName} />
-      </h1>
-    </div>
+    <article className="sm:text-4xl text-2xl w-full font-bold flex justify-center items-center mt-5">
+      <TypewriterEffectSmooth words={words} className="m-0" />
+    </article>
   );
 }
 
 export function WelcomeMsgLoader() {
   return (
-    <div className="flex flex-col gap-y-2">
-      <Skeleton className="w-[230px] h-[50px]" />
-      <Skeleton className="w-[230px] h-[50px]" />
+    <div className="flex  justify-center mt-5">
+      <Skeleton className="w-[350px] h-[40px]" />
     </div>
   );
 }

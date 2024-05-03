@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useTransition } from "react";
-import { Checkbox } from "./ui/checkbox";
+import { Checkbox } from "../ui/checkbox";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { taskType } from "@/schema/task";
@@ -12,16 +12,6 @@ import { toast } from "sonner";
 import { Loader, TrashIcon } from "lucide-react";
 import UpdateTaskDialog from "./UpdateTaskDialog";
 import { collectionType } from "@/schema/collection";
-
-function getExpirationColor(expiresAt: Date) {
-  const days = Math.floor(expiresAt.getTime() - Date.now()) / 1000 / 60 / 60;
-
-  if (days < 0) return "text-gray-300 dark:text-gray-400";
-
-  if (days <= 3 * 24) return "text-red-500 dark:text-red-400";
-  if (days <= 7 * 24) return "text-orange-500 dark:text-orange-400";
-  return "text-gree-500 dark:text-green-400";
-}
 
 function TaskCard({
   task,

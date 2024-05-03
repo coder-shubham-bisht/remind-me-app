@@ -8,7 +8,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTrigger,
-} from "./ui/dialog";
+} from "../ui/dialog";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { cn } from "@/lib/utils";
 import { CollectionColors, CollectionColorsType } from "@/lib/constant";
@@ -23,35 +23,42 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form";
-import { Textarea } from "./ui/textarea";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { Calendar } from "./ui/calendar";
-import { Button } from "./ui/button";
+} from "../ui/form";
+import { Textarea } from "../ui/textarea";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Calendar } from "../ui/calendar";
+import { Button } from "../ui/button";
 import { CalendarIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
 
 import { toast } from "sonner";
-import { createTaskSchema, createTaskSchemaType } from "@/schema/task";
+import {
+  createTaskSchema,
+  createTaskSchemaType,
+  taskType,
+} from "@/schema/task";
 import { collectionType } from "@/schema/collection";
-import { createTask } from "@/action/task";
-import { PlusIcon } from "lucide-react";
+import { createTask, updateTask } from "@/action/task";
+import { Pencil, PlusIcon } from "lucide-react";
 
 interface Props {
   collection: collectionType;
+  task: taskType;
 }
 
-function CreateTaskDialog({ collection }: Props) {
+function UpdateTaskDialog({ collection, task }: Props) {
   const form = useForm<createTaskSchemaType>({
     resolver: zodResolver(createTaskSchema),
     defaultValues: {
       collectionId: collection.id,
+      content: task.content,
+      expiresAt: task.expiresAt,
     },
   });
 
   const onSubmit = async (data: createTaskSchemaType) => {
     try {
-      await createTask(data);
+      await updateTask(task.id, data);
       toast.success("Success", {
         description: "Task created successfully!!",
       });
@@ -60,15 +67,13 @@ function CreateTaskDialog({ collection }: Props) {
         description: "Cannot create task",
       });
     }
-    form.reset();
-    form.setValue("content", ""); // Reset content field
   };
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button size={"icon"} variant={"ghost"}>
-          <PlusIcon />
+          <Pencil size={20} />
         </Button>
       </DialogTrigger>
       <DialogContent>
@@ -187,4 +192,4 @@ function CreateTaskDialog({ collection }: Props) {
   );
 }
 
-export default CreateTaskDialog;
+export default UpdateTaskDialog;

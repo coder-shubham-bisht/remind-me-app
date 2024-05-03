@@ -8,9 +8,8 @@ import {
   AlertDialogFooter,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "./ui/alert-dialog";
-import { Button } from "./ui/button";
-import { useTransition } from "react";
+} from "../ui/alert-dialog";
+import { Button } from "../ui/button";
 import { deleteTask } from "@/action/task";
 import { toast } from "sonner";
 
@@ -37,7 +36,7 @@ const DeleteTask = ({
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button size={"icon"} variant={"ghost"}>
-          <TrashIcon />
+          <TrashIcon size={20} />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
