@@ -128,7 +128,7 @@ function CollectionCard({ collection }: { collection: collectionType }) {
           <Separator className="h-[2px]" />
 
           {/* footer of collection with create at date and edit and delete button */}
-          <section className=" px-4 p-[2px] text-sm text-neutral-500 flex justify-between items-center hover:bg-slate-300 ">
+          <section className=" px-4 p-[2px] text-sm text-neutral-500 flex justify-between items-center ">
             {/* collection created At date */}
             <p className="space-x-1">
               <span>Created at</span>
@@ -150,7 +150,7 @@ function CollectionCard({ collection }: { collection: collectionType }) {
                 description="Collections are a way to group your tasks"
                 trigger={
                   <Button variant={"ghost"} size={"icon"}>
-                    <Pencil />
+                    <Pencil size={20} />
                   </Button>
                 }
               >
@@ -163,13 +163,13 @@ function CollectionCard({ collection }: { collection: collectionType }) {
                   variant={"ghost"}
                   className="animate-bounce"
                 >
-                  <TrashIcon />
+                  <TrashIcon size={20} />
                 </Button>
               ) : (
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button size={"icon"} variant={"ghost"}>
-                      <TrashIcon />
+                      <TrashIcon size={20} />
                     </Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>

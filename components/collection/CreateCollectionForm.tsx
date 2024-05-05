@@ -50,6 +50,8 @@ const CreateCollectionForm = () => {
       toast.error(res.message);
     }
     form.reset();
+    form.setValue("name", "");
+    form.setValue("color", "");
   };
 
   return (
@@ -81,7 +83,7 @@ const CreateCollectionForm = () => {
               <FormItem>
                 <FormLabel> Color</FormLabel>
                 <FormControl>
-                  <Select onValueChange={field.onChange}>
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <SelectTrigger
                       className={cn(
                         CollectionColors[selectedColor as CollectionColorsType]

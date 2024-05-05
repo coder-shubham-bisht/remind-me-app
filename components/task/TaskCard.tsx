@@ -23,7 +23,7 @@ function TaskCard({
   const [isChecking, checkTransition] = useTransition();
   const [isDeleting, deleteTransition] = useTransition();
   return (
-    <div className="flex gap-2  items-center w-full justify-between ">
+    <div className="flex gap-2   w-full justify-between flex-col">
       <div className="flex items-center gap-2">
         {isChecking ? (
           <Loader className="animate-spin" />
@@ -54,7 +54,7 @@ function TaskCard({
           {task.content}
         </label>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between gap-2">
         {task.expiresAt && (
           <p
             className={cn(
@@ -72,13 +72,16 @@ function TaskCard({
             </span>
           </p>
         )}
-        <UpdateTaskDialog collection={colllection} task={task} />
-        {/* Delete task Button */}
-        {isDeleting ? (
-          <TrashIcon className="animate-ping" />
-        ) : (
-          <DeleteTask taskId={task.id} deleteTransition={deleteTransition} />
-        )}
+
+        <div className="">
+          <UpdateTaskDialog collection={colllection} task={task} />
+          {/* Delete task Button */}
+          {isDeleting ? (
+            <TrashIcon className="animate-ping" />
+          ) : (
+            <DeleteTask taskId={task.id} deleteTransition={deleteTransition} />
+          )}
+        </div>
       </div>
     </div>
   );
